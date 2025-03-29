@@ -5,7 +5,37 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "django-cors-headers>=4.7.0",
     "djangorestframework>=3.15.2",
+    "djangorestframework-simplejwt>=5.5.0",
     "drf-spectacular>=0.28.0",
+    "isort>=6.0.1",
+    "pre-commit>=4.2.0",
+    "psycopg2-binary>=2.9.10",
+    "pytest-cov>=6.0.0",
+    "pytest-django>=4.10.0",
     "ruff>=0.11.2",
 ]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
+ignore = ["E712"]
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+line-ending = "auto"
+
+[tool.mypy]
+plugins = "mypy_django_plugin.main"
+
+[tool.mypy_django_plugin]
+ignore_missing_model_attributes = "True"

@@ -1,0 +1,15 @@
+[run]
+# Katalogi i pliki, które mają być pomijane w pomiarze pokrycia
+omit =
+    */tests/*
+    */migrations/*
+    */admin.py
+    */apps.py
+    */settings/*
+    */urls.py
+    */wsgi.py
+    */asgi.py
+    */manage.py
+    */__init__.py
+    */celery.py
+    */test_*.py

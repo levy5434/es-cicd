@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    image: app:latest
+    ports:
+      - "8000:8000"
+    entrypoint: ./scripts/django_entrypoint.sh
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
