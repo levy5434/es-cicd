@@ -27,8 +27,6 @@ class Command(BaseCommand):
         max_retries = options["max_retries"]
         wait_seconds = options["wait_seconds"]
 
-        self.stdout.write("Waiting for database...")
-
         for i in range(max_retries):
             try:
                 conn = psycopg2.connect(
@@ -40,6 +38,7 @@ class Command(BaseCommand):
                 )
                 conn.close()
                 self.stdout.write(self.style.SUCCESS("Database is ready!"))
+                return
             except OperationalError as e:
                 time.sleep(wait_seconds)
                 if i == max_retries - 1:
