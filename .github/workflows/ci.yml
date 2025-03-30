@@ -28,12 +28,12 @@ jobs:
       with:
         python-version: "3.11"
 
-    # 3. Instalacja uv i zależności (z uv.lock)
-    - name: Install dependencies
-      run: |
-        pip install uv
-        uv pip install --locked
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v5
 
+    - name: Install dependencies
+      run: uv sync -p 3.11
+      
     # 5. Uruchomienie testów (SQLite in-memory)
     - name: Run tests
       working-directory: ./src
