@@ -32,6 +32,8 @@ jobs:
       uses: astral-sh/setup-uv@v5
 
     - name: Install dependencies
+      env:
+        UV_LINK_MODE: copy
       run: uv sync -p 3.11
       
     # 5. Uruchomienie testów (SQLite in-memory)
@@ -44,7 +46,7 @@ jobs:
         POSTGRES_PASSWORD: test_pass
         TEST_DB_HOST: postgres
       run: |
-        pytest --cov=./ --cov-report=xml --ds=configuration.test_settings
+        uv run pytest --cov=./ --cov-report=xml --ds=configuration.test_settings
 
     # 6. Upload coverage
     - name: Upload coverage
