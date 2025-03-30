@@ -1,0 +1,59 @@
+name: Django Quality Assurance
+
+on: [push, pull_request]
+
+jobs:
+  quality-assurance:
+    name: Quality Assurance
+    runs-on: ubuntu-latest
+    container: python:3.13-slim-bookworm
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_pass
+        ports:
+          - 5432:5432
+
+    steps:
+    # 1. Pobranie kodu z repozytorium
+    - uses: actions/checkout@v4
+
+    # 2. Setup Pythona
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    # 3. Instalacja uv i zależności (z uv.lock)
+    - name: Install dependencies
+      run: |
+        pip install uv
+        uv pip install --locked
+
+    # 5. Uruchomienie testów (SQLite in-memory)
+    - name: Run tests
+      working-directory: ./src
+      env:
+        GITHUB_ACTIONS: "true"
+        POSTGRES_DB: test_db
+        POSTGRES_USER: test_user
+        POSTGRES_PASSWORD: test_pass
+        TEST_DB_HOST: postgres
+      run: |
+        pytest --cov=./ --cov-report=xml --ds=configuration.test_settings
+
+    # 6. Upload coverage
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+    - run: pip install ruff
+    - run: ruff check . --config=pyproject.toml
