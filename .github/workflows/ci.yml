@@ -36,14 +36,14 @@ jobs:
         UV_LINK_MODE: copy
       run: uv sync -p 3.11
       
-    # 5. Uruchomienie testów (SQLite in-memory)
     - name: Run tests
       working-directory: ./src
       env:
+        DJANGO_SECRET_KEY: (pr9ml(l5s32sthy)tv&9&wyrxk+(0l5vlk%%v!wq8-r&tknu^
         GITHUB_ACTIONS: "true"
-        POSTGRES_DB: test_db
-        POSTGRES_USER: test_user
-        POSTGRES_PASSWORD: test_pass
+        TEST_DB_NAME: test_db
+        TEST_DB_USER: test_user
+        TEST_DB_PASSWORD: test_pass
         TEST_DB_HOST: postgres
       run: |
         uv run pytest --cov=./ --cov-report=xml --ds=configuration.test_settings
