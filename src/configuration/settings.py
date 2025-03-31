@@ -29,9 +29,7 @@ DEBUG = not (os.environ.get("PRODUCTION") == "True")
 
 ALLOWED_HOSTS = json.loads(os.environ.get("DJANGO_ALLOWED_HOSTS", "[]"))
 
-
 # Application definition
-
 INSTALLED_APPS = [
     # Project Apps
     "api.apps.ApiConfig",
@@ -131,7 +129,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/static/"
+STATIC_ROOT = "/vol/web/static/"
+
+MEDIA_URL = "/static/media/"
+MEDIA_ROOT = "/vol/web/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -147,7 +149,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-# Turn off HTTPS for testing enviroment
+# Turn on HTTPS for production enviroment
 if os.environ.get("PRODUCTION") == "True":
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_SSL_REDIRECT = True

@@ -35,7 +35,7 @@ jobs:
       env:
         UV_LINK_MODE: copy
       run: uv sync -p 3.11
-      
+
     - name: Run tests
       working-directory: ./src
       env:
