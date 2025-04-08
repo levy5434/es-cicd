@@ -31,19 +31,14 @@ WORKDIR /app
 
 # Add User to prevent root privileges
 RUN useradd -m -r appuser && \
-    chown -R appuser /app &&\
-    mkdir -p /vol/web/static &&\
-    chown -R appuser /vol
-
+    mkdir -p /vol/web/static && \
+    chown -R appuser /app /vol
 
 # Copy the Python dependencies from the builder stage
-COPY --from=builder /app /app
+COPY --from=builder --chown=appuser /app /app
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy application code
 COPY --chown=appuser:appuser . .
-
-# Switch to non-root user
-USER appuser
 
 RUN chmod +x /app/scripts/django_entrypoint.sh
